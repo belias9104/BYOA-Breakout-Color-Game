@@ -18,10 +18,7 @@ let topCategory: UInt32 = 0x5 << 5
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var topPaddle = SKSpriteNode()
-    var bottomPaddle = SKSpriteNode()
-    var rightPaddle = SKSpriteNode()
-    var leftPaddle = SKSpriteNode()
+    var paddle = SKSpriteNode()
     var ball = SKSpriteNode()
     
     var started = false
@@ -41,7 +38,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //movement of paddles and delay start
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //movement of paddles
+        let touch = touches.first!
+        let location = touch.location(in: self)
+        paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        //6
     }
 }
     
