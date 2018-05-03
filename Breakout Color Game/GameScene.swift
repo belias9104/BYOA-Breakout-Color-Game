@@ -41,7 +41,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let touch = touches.first!
         let location = touch.location(in: self)
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
-        //6
+    }
+    func changeBlock(_ node: SKSpriteNode) {
+        if node.color == UIColor.red{
+            node.color = UIColor.orange
+        }
+        if node.color == UIColor.orange {
+            node.color = UIColor.yellow
+        }
+        if node.color == UIColor.yellow {
+            node.color = UIColor.green
+        }
+        if node.color == UIColor.green {
+            node.removeFromParent()
+        }
     }
 }
     
