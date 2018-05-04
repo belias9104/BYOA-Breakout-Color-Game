@@ -27,6 +27,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         //contact delegate
+        paddle = self.childNode(withName: "paddle") as! SKSpriteNode
+        ball = self.childNode(withName: "ball") as! SKSpriteNode
+        
+        
     }
     func didBegin(_ contact: SKPhysicsContact) {
         //bitmasks
