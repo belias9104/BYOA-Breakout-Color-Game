@@ -26,7 +26,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var label = SKLabelNode()
     
     override func didMove(to view: SKView) {
+        physicsWorld.contactDelegate = self
         
+        label = SKLabelNode(text: "0")
+        label.fontSize = 100.0
+        label.position = CGPoint(x: 0, y: -35)
+        addChild(label)
+        
+        paddle = self.childNode(withName: "paddle") as! SKSpriteNode
+        
+        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
+        self.physicsBody = border
+        
+        paddle.physicsBody?.categoryBitMask = paddleCategory
+        border.categoryBitMask = borderCategory
+        
+        
+        ball.physicsBody?.categoryBitMask = ballCategory
         
     }
     func didBegin(_ contact: SKPhysicsContact) {
