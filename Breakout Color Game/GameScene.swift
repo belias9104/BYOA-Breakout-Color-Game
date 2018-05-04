@@ -41,10 +41,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
         let location = touch.location(in: self)
-       .run(SKAction.moveTo(x: location., duration: 0.2))
-        .run(SKAction.moveTo(x: -location., duration: 0.2))
-        .run(SKAction.moveTo(y: -location., duration: 0.2))
-        .run(SKAction.moveTo(y: location., duration: 0.2))
+       ball.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        ball.run(SKAction.moveTo(x: -location.y, duration: 0.2))
+        paddle.run(SKAction.moveTo(y: -location.x, duration: 0.2))
+       
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
