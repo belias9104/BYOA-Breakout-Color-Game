@@ -11,25 +11,38 @@ import GameplayKit
 
 let ballCategory: UInt32 = 0x1 << 0
 let paddleCategory: UInt32 = 0x2 << 1
-let leftCategory: UInt32 = 0x2 << 2
-let rightCategory: UInt32 = 0x3 << 3
-let bottomCategory: UInt32 = 0x4 << 4
-let topCategory: UInt32 = 0x5 << 5
+let borderCategory: UInt32 = 0x2 << 2
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var paddle = SKSpriteNode()
     var ball = SKSpriteNode()
+    var block1 = SKSpriteNode()
+    var block2 = SKSpriteNode()
+    var block3 = SKSpriteNode()
     
     var started = false
     var counter = 0
     var label = SKLabelNode()
     
     override func didMove(to view: SKView) {
-        //contact delegate
-        paddle = self.childNode(withName: "paddle") as! SKSpriteNode
-        ball = self.childNode(withName: "ball") as! SKSpriteNode
+        physicsWorld.contactDelegate = self
         
+        label = SKLabelNode(text: "0")
+        label.fontSize = 100.0
+        label.position = CGPoint(x: 0, y: -35)
+        addChild(label)
+        
+        paddle = self.childNode(withName: "paddle") as! SKSpriteNode
+        
+        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
+        self.physicsBody = border
+        
+        paddle.physicsBody?.categoryBitMask = paddleCategory
+        border.categoryBitMask = borderCategory
+        
+        
+        ball.physicsBody?.categoryBitMask = ballCategory
         
     }
     func didBegin(_ contact: SKPhysicsContact) {
