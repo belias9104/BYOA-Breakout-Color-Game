@@ -35,7 +35,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //paddle color
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //movement of paddles and delay start
+        let touch = touches.first!
+        let location = touch.location(in: self)
+        topPaddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        bottomPaddle.run(SKAction.moveTo(x: -location.x, duration: 0.2))
+        rightPaddle.run(SKAction.moveTo(y: -location.x, duration: 0.2))
+        leftPaddle.run(SKAction.moveTo(y: location.x, duration: 0.2))
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
