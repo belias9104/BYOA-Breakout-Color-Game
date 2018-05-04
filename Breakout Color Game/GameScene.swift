@@ -12,6 +12,9 @@ import GameplayKit
 let ballCategory: UInt32 = 0x1 << 0
 let paddleCategory: UInt32 = 0x2 << 1
 let borderCategory: UInt32 = 0x2 << 2
+let block1Category: UInt32 = 0x3 << 3
+let block2Category: UInt32 = 0x4 << 4
+let block3Category: UInt32 = 0x5 << 5
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -34,14 +37,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(label)
         
         paddle = self.childNode(withName: "paddle") as! SKSpriteNode
+        block1 = self.childNode(withName: "block1") as! SKSpriteNode
+        block2 = self.childNode(withName: "block2") as! SKSpriteNode
+        block3 = self.childNode(withName: "block3") as! SKSpriteNode
+        ball = self.childNode(withName: "ball") as! SKSpriteNode
         
         let border = SKPhysicsBody(edgeLoopFrom: self.frame)
         self.physicsBody = border
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
         border.categoryBitMask = borderCategory
-        
-        
+        block1.physicsBody?.categoryBitMask = block1Category
+        block2.physicsBody?.categoryBitMask = block2Category
+        block3.physicsBody?.categoryBitMask = block3Category
         ball.physicsBody?.categoryBitMask = ballCategory
         
     }
