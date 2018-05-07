@@ -12,9 +12,7 @@ import GameplayKit
 let ballCategory: UInt32 = 0x1 << 0
 let paddleCategory: UInt32 = 0x2 << 1
 let borderCategory: UInt32 = 0x2 << 2
-let block1Category: UInt32 = 0x3 << 3
-let block2Category: UInt32 = 0x4 << 4
-let block3Category: UInt32 = 0x5 << 5
+let blockCategory: UInt32 = 0x6 << 6
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -47,14 +45,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
         border.categoryBitMask = borderCategory
-        block1.physicsBody?.categoryBitMask = block1Category
-        block2.physicsBody?.categoryBitMask = block2Category
-        block3.physicsBody?.categoryBitMask = block3Category
         ball.physicsBody?.categoryBitMask = ballCategory
+        
+        block1.physicsBody?.categoryBitMask = blockCategory
+        block2.physicsBody?.categoryBitMask = blockCategory
+        block3.physicsBody?.categoryBitMask = blockCategory
+        
+        ball.physicsBody?.contactTestBitMask = blockCategory | borderCategory | paddleCategory
         
     }
     func didBegin(_ contact: SKPhysicsContact) {
-        //bitmasks
+        if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory {
+            changeBlock(contact.bodyA.node as! SKSpriteNode)
+        }
+        print("contact with \(contact.bodyA.node?.name) and \(contact.bodyB.node?.name)")
     }
     func changePaddle(_ node: SKSpriteNode) {
         //paddle color
@@ -76,14 +80,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func changeBlock(_ node: SKSpriteNode) {
         if node.color == UIColor.red{
             node.color = UIColor.orange
-        }
-        if node.color == UIColor.orange {
+        } else if node.color == UIColor.orange {
             node.color = UIColor.yellow
-        }
-        if node.color == UIColor.yellow {
+        } else if node.color == UIColor.yellow {
             node.color = UIColor.green
-        }
-        if node.color == UIColor.green {
+        } else if node.color == UIColor.green {
             node.removeFromParent()
         }
     }
