@@ -77,8 +77,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(right)
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
-        border.categoryBitMask = borderCategory
-//        bottom.physicsBody?.categoryBitMask = bottomCategory
+//        border.categoryBitMask = borderCategory
+        bottom.physicsBody?.categoryBitMask = bottomCategory
         top.physicsBody?.categoryBitMask = topCategory
         left.physicsBody?.categoryBitMask = leftCategory
         right.physicsBody?.categoryBitMask = rightCategory
