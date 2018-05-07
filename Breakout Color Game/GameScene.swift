@@ -93,5 +93,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
         }
     }
+    func livesCount(_ contact: SKPhysicsContact) {
+        if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
+            label.text = "1"
+            removeAllActions()
+            if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory{
+                label.text = "2"
+                removeAllActions()
+                if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory{
+                    label.text = "Game Over"
+                    removeAllActions()
+                }
+            }
+        }
+        
+    }
 }
     
