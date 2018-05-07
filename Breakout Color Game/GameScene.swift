@@ -64,6 +64,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //paddle color
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if !started {
+            started = true
+            ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
+        }
+        
         let touch = touches.first!
         let location = touch.location(in: self)
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
