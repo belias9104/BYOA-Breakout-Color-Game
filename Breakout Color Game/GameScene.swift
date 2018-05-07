@@ -51,12 +51,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         block2.physicsBody?.categoryBitMask = blockCategory
         block3.physicsBody?.categoryBitMask = blockCategory
         
-        ball.physicsBody?.contactTestBitMask = blockCategory | borderCategory | paddleCategory
+        ball.physicsBody?.contactTestBitMask = blockCategory | bottomCategory | paddleCategory
         
     }
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory {
             changeBlock(contact.bodyA.node as! SKSpriteNode)
+        } else if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
+            //Insert counter or restart here
         }
         print("contact with \(contact.bodyA.node?.name) and \(contact.bodyB.node?.name)")
     }
