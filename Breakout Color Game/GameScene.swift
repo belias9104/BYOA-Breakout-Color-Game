@@ -12,7 +12,11 @@ import GameplayKit
 let ballCategory: UInt32 = 0x1 << 0
 let paddleCategory: UInt32 = 0x2 << 1
 let borderCategory: UInt32 = 0x2 << 2
-let blockCategory: UInt32 = 0x6 << 6
+let blockCategory: UInt32 = 0x3 << 3
+let leftCategory: UInt32 = 0x4 << 4
+let rightCategory: UInt32 = 0x5 << 5
+let bottomCategory: UInt32 = 0x6 << 6
+let topCategory: UInt32 = 0x7 << 7
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -40,11 +44,44 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         block3 = self.childNode(withName: "block3") as! SKSpriteNode
         ball = self.childNode(withName: "ball") as! SKSpriteNode
         
-        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
-        self.physicsBody = border
+//        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        self.physicsBody = border
+        
+        let bottomLeft = CGPoint(x: frame.origin.x, y: frame.origin.y)
+        let bottomRight = CGPoint(x: -frame.origin.x, y: frame.origin.y)
+        let topLeft = CGPoint(x: frame.origin.x, y: -frame.origin.y)
+        let topRight = CGPoint(x: -frame.origin.x, y: -frame.origin.y)
+        
+        let bottom = SKNode()
+        bottom.name = "bottom"
+        bottom.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: bottomRight)
+        
+        addChild(bottom)
+        
+        let top = SKNode()
+        top.name = "top"
+        top.physicsBody = SKPhysicsBody(edgeFrom: topLeft, to: topRight)
+        
+        addChild(top)
+        
+        let left = SKNode()
+        left.name = "left"
+        left.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: topLeft)
+        
+        addChild(left)
+        
+        let right = SKNode()
+        right.name = "right"
+        right.physicsBody = SKPhysicsBody(edgeFrom: bottomRight, to: topRight)
+        
+        addChild(right)
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
         border.categoryBitMask = borderCategory
+//        bottom.physicsBody?.categoryBitMask = bottomCategory
+        top.physicsBody?.categoryBitMask = topCategory
+        left.physicsBody?.categoryBitMask = leftCategory
+        right.physicsBody?.categoryBitMask = rightCategory
         ball.physicsBody?.categoryBitMask = ballCategory
         
         block1.physicsBody?.categoryBitMask = blockCategory
