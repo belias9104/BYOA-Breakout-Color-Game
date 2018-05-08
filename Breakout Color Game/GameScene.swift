@@ -27,13 +27,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var block3 = SKSpriteNode()
     
     var started = false
-    var counter = 0
+    var counter = 3
     var label = SKLabelNode()
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
         
-        label = SKLabelNode(text: "0")
+        label = SKLabelNode(text: String(counter))
         label.fontSize = 100.0
         label.position = CGPoint(x: 0, y: -35)
         addChild(label)
@@ -77,8 +77,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(right)
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
-        border.categoryBitMask = borderCategory
-//        bottom.physicsBody?.categoryBitMask = bottomCategory
+//        border.categoryBitMask = borderCategory
+        bottom.physicsBody?.categoryBitMask = bottomCategory
         top.physicsBody?.categoryBitMask = topCategory
         left.physicsBody?.categoryBitMask = leftCategory
         right.physicsBody?.categoryBitMask = rightCategory
@@ -95,7 +95,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory {
             changeBlock(contact.bodyA.node as! SKSpriteNode)
         } else if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
-            //Insert counter or restart here
+            livesCount()
         }
         print("contact with \(contact.bodyA.node?.name) and \(contact.bodyB.node?.name)")
     }
@@ -130,20 +130,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
         }
     }
-    func livesCount(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
-            label.text = "1"
-            removeAllActions()
-            if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory{
-                label.text = "2"
-                removeAllActions()
-                if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory{
-                    label.text = "Game Over"
-                    removeAllActions()
-                }
-            }
+    func livesCount() {
+        if counter == 1 {
+            label.text = "Game Over"
+        } else {
+        counter -= 1
+        label.text = String(counter)
         }
-        
     }
+    
 }
     
