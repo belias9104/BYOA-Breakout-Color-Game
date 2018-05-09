@@ -27,8 +27,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var block3 = SKSpriteNode()
     
     var started = false
+    var gameOver = false
     var counter = 3
     var label = SKLabelNode()
+    var gameOverLabel = SKLabelNode()
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
@@ -103,15 +105,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //paddle color
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if !started {
+        let touch = touches.first!
+        let location = touch.location(in: self)
+        if gameOver == true && gameOverLabel.frame.contains(location) {
+            restartTapped()
+        } else {
+        if started == false {
             started = true
             ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
         }
-        
-        let touch = touches.first!
-        let location = touch.location(in: self)
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
-        
+        }
        
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -133,11 +137,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func livesCount() {
         if counter == 1 {
             label.text = "Game Over"
+            gameOver = true
+            gameOverLabel = SKLabelNode(text: "Restart?")
+            gameOverLabel.fontSize = 60.0
+            gameOverLabel.position = CGPoint(x: 0, y: -150)
+            scene!.addChild(gameOverLabel)
         } else {
         counter -= 1
         label.text = String(counter)
         }
     }
-    
+    func restartTapped() {
+        //restart the game
+        if let view = self.view {
+            if let scene = SKScene(fileNamed: "GameScene") {
+                scene.scaleMode = .aspectFill
+                view.presentScene(scene)
+            }
+            view.ignoresSiblingOrder = true
+            view.showsFPS = true
+            view.showsNodeCount = true
+        }
+    }
 }
     
