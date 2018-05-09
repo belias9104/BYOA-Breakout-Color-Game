@@ -97,10 +97,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
             livesCount()
         }
+        if contact.bodyB.node?.physicsBody?.categoryBitMask == ballCategory {
+            changeBall(ball)
+        }
         print("contact with \(contact.bodyA.node?.name) and \(contact.bodyB.node?.name)")
-    }
-    func changePaddle(_ node: SKSpriteNode) {
-        //paddle color
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !started {
@@ -128,6 +128,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.color = UIColor.green
         } else if node.color == UIColor.green {
             node.removeFromParent()
+        }
+    }
+    func changeBall(_ node: SKSpriteNode) {
+        if node.color == UIColor.red{
+            node.color = UIColor.orange
+        } else if node.color == UIColor.orange {
+            node.color = UIColor.yellow
+        } else if node.color == UIColor.yellow {
+            node.color = UIColor.green
+        } else if node.color == UIColor.green {
+            node.color = UIColor.red
         }
     }
     func livesCount() {
