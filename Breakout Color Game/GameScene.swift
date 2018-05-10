@@ -93,6 +93,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         ball.physicsBody?.contactTestBitMask = blockCategory | bottomCategory | paddleCategory
         
+        while started == true && gameOver == false {
+            sleep(3)
+            print("check")
+            if (ball.physicsBody?.velocity.dy)! <= CGFloat(50) {
+                ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 200))
+            }
+        }
     }
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory {
@@ -103,7 +110,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyB.node?.physicsBody?.categoryBitMask == ballCategory {
             changeBall(ball)
         }
-        print("contact with \(contact.bodyA.node?.name) and \(contact.bodyB.node?.name)")
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
@@ -113,11 +119,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
         if started == false {
             started = true
-            ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
+            ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 0))
         }
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
-       
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
