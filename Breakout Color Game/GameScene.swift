@@ -29,6 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var started = false
     var gameOver = false
     var counter = 3
+    var blocks = ["block1", "block2","block3"]
     var label = SKLabelNode()
     var gameOverLabel = SKLabelNode()
     
@@ -132,6 +133,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.color = UIColor.green
         } else if node.color == UIColor.green {
             node.removeFromParent()
+            blocks.remove(at: 0)
+            if blocks.count == 0 {
+                label.text = "Game Over"
+                gameOver = true
+                gameOverLabel = SKLabelNode(text: "Restart?")
+                gameOverLabel.fontSize = 60.0
+                gameOverLabel.position = CGPoint(x: 0, y: -150)
+                ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                scene!.addChild(gameOverLabel)
+            }
         }
     }
     func changeBall(_ node: SKSpriteNode) {
@@ -152,6 +163,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameOverLabel = SKLabelNode(text: "Restart?")
             gameOverLabel.fontSize = 60.0
             gameOverLabel.position = CGPoint(x: 0, y: -150)
+            ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             scene!.addChild(gameOverLabel)
         } else {
         counter -= 1
