@@ -8,7 +8,7 @@
 
 import SpriteKit
 import GameplayKit
-
+var backgroundMusic: SKAudioNode!
 let ballCategory: UInt32 = 0x1 << 0
 let paddleCategory: UInt32 = 0x2 << 1
 let borderCategory: UInt32 = 0x2 << 2
@@ -35,7 +35,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
-        
+        if let musicURL = Bundle.main.url(forResource: "My Song 68", withExtension: "m4a") {
+            backgroundMusic = SKAudioNode(url: musicURL)
+            addChild(backgroundMusic)
+        }
         label = SKLabelNode(text: String(counter))
         label.fontSize = 100.0
         label.position = CGPoint(x: 0, y: -35)
