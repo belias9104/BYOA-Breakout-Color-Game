@@ -114,7 +114,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
         if started == false {
             started = true
-            //ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
+            ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
         }
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
