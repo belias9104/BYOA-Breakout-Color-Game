@@ -92,15 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         block3.physicsBody?.categoryBitMask = blockCategory
         
         ball.physicsBody?.contactTestBitMask = blockCategory | bottomCategory | paddleCategory
-        
-        while started == true && gameOver == false {
-            sleep(3)
-            print("check")
-            if (ball.physicsBody?.velocity.dy)! <= CGFloat(50) {
-                ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 200))
-            }
         }
-    }
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory {
             changeBlock(contact.bodyA.node as! SKSpriteNode)
@@ -119,9 +111,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else {
         if started == false {
             started = true
-            ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 0))
+            //ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
         }
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        }
+        if started == true && gameOver == false {
+                checkIfStuck()
         }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -165,6 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if counter == 1 {
             label.text = "Game Over"
             gameOver = true
+            started = false
             gameOverLabel = SKLabelNode(text: "Restart?")
             gameOverLabel.fontSize = 60.0
             gameOverLabel.position = CGPoint(x: 0, y: -150)
@@ -186,6 +182,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             view.showsFPS = true
             view.showsNodeCount = true
         }
+    }
+    func checkIfStuck() {
+        if (ball.physicsBody?.velocity.dy)! < CGFloat(10) && (ball.physicsBody?.velocity.dy)! > CGFloat(-10) {
+            if (ball.physicsBody?.velocity.dy)! < CGFloat(0) {
+                ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -300))
+            } else if(ball.physicsBody?.velocity.dy)! >= CGFloat(0) {
+                ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
+            }
+        } else if (ball.physicsBody?.velocity.dx)! < CGFloat(10) && (ball.physicsBody?.velocity.dx)! > CGFloat(-10) {
+            if (ball.physicsBody?.velocity.dx)! < CGFloat(0) {
+                ball.physicsBody?.applyImpulse(CGVector(dx: -300, dy: 0))
+            } else if(ball.physicsBody?.velocity.dx)! >= CGFloat(0) {
+                ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 0))
+            }
+        }
+        print("check")
     }
 }
     
