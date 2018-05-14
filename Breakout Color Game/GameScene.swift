@@ -143,7 +143,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if counter == 1 {
             label.text = "Game Over"
             gameOver = true
-            started = false
             gameOverLabel = SKLabelNode(text: "Restart?")
             gameOverLabel.fontSize = 60.0
             gameOverLabel.position = CGPoint(x: 0, y: -150)
