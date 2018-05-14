@@ -97,7 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.contactTestBitMask = blockCategory | bottomCategory | paddleCategory
         }
     func didBegin(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory {
+        if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory && ball.color == block3.color {
             changeBlock(contact.bodyA.node as! SKSpriteNode)
         } else if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
             livesCount()
@@ -127,6 +127,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let location = touch.location(in: self)
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
     }
+    
     func changeBlock(_ node: SKSpriteNode) {
         if node.color == UIColor.red{
             node.color = UIColor.orange
@@ -138,7 +139,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
             blocks.remove(at: 0)
             if blocks.count == 0 {
-                label.text = "Game Over"
+                label.text = "You win!"
                 gameOver = true
                 gameOverLabel = SKLabelNode(text: "Restart?")
                 gameOverLabel.fontSize = 60.0
@@ -168,7 +169,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameOverLabel.position = CGPoint(x: 0, y: -150)
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             scene!.addChild(gameOverLabel)
-        } else {
+        }
+        else {
         counter -= 1
         label.text = String(counter)
         }
@@ -180,6 +182,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 scene.scaleMode = .aspectFill
                 view.presentScene(scene)
             }
+            
             view.ignoresSiblingOrder = true
             view.showsFPS = true
             view.showsNodeCount = true
