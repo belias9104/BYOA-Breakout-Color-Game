@@ -135,7 +135,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
             blocks.remove(at: 0)
             if blocks.count == 0 {
-                label.text = "Game Over"
+                label.text = "You win!"
                 gameOver = true
                 gameOverLabel = SKLabelNode(text: "Restart?")
                 gameOverLabel.fontSize = 60.0
@@ -165,7 +165,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             gameOverLabel.position = CGPoint(x: 0, y: -150)
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             scene!.addChild(gameOverLabel)
-        } else {
+        }
+        else {
         counter -= 1
         label.text = String(counter)
         }
@@ -177,6 +178,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 scene.scaleMode = .aspectFill
                 view.presentScene(scene)
             }
+            
             view.ignoresSiblingOrder = true
             view.showsFPS = true
             view.showsNodeCount = true
