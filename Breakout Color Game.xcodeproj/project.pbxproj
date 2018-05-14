@@ -15,6 +15,7 @@
 		0BF5FBD3209A495500CE9E6E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BF5FBD1209A495500CE9E6E /* Main.storyboard */; };
 		0BF5FBD5209A495800CE9E6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BF5FBD4209A495800CE9E6E /* Assets.xcassets */; };
 		0BF5FBD8209A495800CE9E6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BF5FBD6209A495800CE9E6E /* LaunchScreen.storyboard */; };
+		40BCE3AF20A62634006DBA49 /* My Song 68.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 40BCE3AE20A62634006DBA49 /* My Song 68.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		0BF5FBD4209A495800CE9E6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0BF5FBD7209A495800CE9E6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BF5FBD9209A495800CE9E6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		40BCE3AE20A62634006DBA49 /* My Song 68.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "My Song 68.m4a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 			children = (
 				0BF5FBC6209A495500CE9E6E /* Breakout Color Game */,
 				0BF5FBC5209A495500CE9E6E /* Products */,
+				40BCE3AE20A62634006DBA49 /* My Song 68.m4a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BF5FBD3209A495500CE9E6E /* Main.storyboard in Resources */,
+				40BCE3AF20A62634006DBA49 /* My Song 68.m4a in Resources */,
 				0BF5FBCA209A495500CE9E6E /* GameScene.sks in Resources */,
 				0BF5FBD5209A495800CE9E6E /* Assets.xcassets in Resources */,
 				0BF5FBD8209A495800CE9E6E /* LaunchScreen.storyboard in Resources */,
