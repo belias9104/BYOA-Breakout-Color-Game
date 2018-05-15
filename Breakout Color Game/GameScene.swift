@@ -41,6 +41,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         label.fontSize = 100.0
         label.position = CGPoint(x: 0, y: -35)
         addChild(label)
+        gameOverLabel = SKLabelNode(text: "Restart?")
+        gameOverLabel.fontSize = 60.0
+        gameOverLabel.position = CGPoint(x: 0, y: -150)
         
         paddle = self.childNode(withName: "paddle") as! SKSpriteNode
         block1 = self.childNode(withName: "block1") as! SKSpriteNode
@@ -94,6 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if started == false {
             started = true
             ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
+            blocksStartMoving()
         }
         paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
@@ -120,9 +124,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if blocks.count == 0 {
                 label.text = "You win!"
                 gameOver = true
-                gameOverLabel = SKLabelNode(text: "Restart?")
-                gameOverLabel.fontSize = 60.0
-                gameOverLabel.position = CGPoint(x: 0, y: -150)
                 ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
                 scene!.addChild(gameOverLabel)
             }
@@ -143,9 +144,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if counter == 1 {
             label.text = "Game Over"
             gameOver = true
-            gameOverLabel = SKLabelNode(text: "Restart?")
-            gameOverLabel.fontSize = 60.0
-            gameOverLabel.position = CGPoint(x: 0, y: -150)
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             scene!.addChild(gameOverLabel)
         }
@@ -182,6 +180,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         print("check")
+    }
+    func blocksStartMoving() {
+        block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: 2), SKAction.moveTo(y: 0, duration: 2)])))
+        block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.moveTo(y: 300, duration: 2), SKAction.moveTo(y: 0, duration: 2)])))
+        block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.moveTo(y: 300, duration: 2), SKAction.moveTo(y: 0, duration: 2)])))
     }
 }
     
