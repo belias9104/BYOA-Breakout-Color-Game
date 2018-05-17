@@ -99,16 +99,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
             blocksStartMoving()
         }
-        paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
         if started == true && gameOver == false {
-                checkIfStuck()
+            checkIfStuck()
+            paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
         let location = touch.location(in: self)
-        paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        if started == true && gameOver == false {
+            paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        }
     }
     
     func changeBlock(_ node: SKSpriteNode) {
@@ -125,6 +127,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 label.text = "You win!"
                 gameOver = true
                 ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                block1.removeAllActions()
+                block2.removeAllActions()
+                block3.removeAllActions()
                 scene!.addChild(gameOverLabel)
             }
         }
@@ -145,6 +150,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             label.text = "Game Over"
             gameOver = true
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+            block1.removeAllActions()
+            block2.removeAllActions()
+            block3.removeAllActions()
             scene!.addChild(gameOverLabel)
         }
         else {
@@ -166,13 +174,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func checkIfStuck() {
-        if (ball.physicsBody?.velocity.dy)! < CGFloat(10) && (ball.physicsBody?.velocity.dy)! > CGFloat(-10) {
+        if (ball.physicsBody?.velocity.dy)! < CGFloat(20) && (ball.physicsBody?.velocity.dy)! > CGFloat(-20) {
             if (ball.physicsBody?.velocity.dy)! < CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -300))
             } else if(ball.physicsBody?.velocity.dy)! >= CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
             }
-        } else if (ball.physicsBody?.velocity.dx)! < CGFloat(10) && (ball.physicsBody?.velocity.dx)! > CGFloat(-10) {
+        } else if (ball.physicsBody?.velocity.dx)! < CGFloat(20) && (ball.physicsBody?.velocity.dx)! > CGFloat(-20) {
             if (ball.physicsBody?.velocity.dx)! < CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: -300, dy: 0))
             } else if(ball.physicsBody?.velocity.dx)! >= CGFloat(0) {
@@ -182,9 +190,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("check")
     }
     func blocksStartMoving() {
-        block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: 2), SKAction.moveTo(y: 0, duration: 2)])))
-        block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.moveTo(y: 300, duration: 2), SKAction.moveTo(y: 0, duration: 2)])))
-        block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.moveTo(y: 300, duration: 2), SKAction.moveTo(y: 0, duration: 2)])))
+        block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
+        block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
+        block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
     }
 }
-    
+
