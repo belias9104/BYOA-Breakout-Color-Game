@@ -56,27 +56,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let topLeft = CGPoint(x: frame.origin.x, y: -frame.origin.y)
         let topRight = CGPoint(x: -frame.origin.x, y: -frame.origin.y)
         
-        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
-        self.physicsBody = border
+//        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        self.physicsBody = border
         
         
         
-        let bottom = SKNode()
-        bottom.name = "bottom"
-        bottom.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: bottomRight)
+//        let bottom = SKNode()
+//        bottom.name = "bottom"
+//        bottom.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: bottomRight)
+//
+//        addChild(bottom)
         
-        addChild(bottom)
+        let left = SKNode()
+        left.name = "left"
+        left.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: topLeft)
+        
+        addChild(left)
+        
+        let right = SKNode()
+        right.name = "right"
+        right.physicsBody = SKPhysicsBody(edgeFrom: bottomRight, to: topRight)
+        
+        addChild(right)
+        
+        let top = SKNode()
+        top.name = "top"
+        top.physicsBody = SKPhysicsBody(edgeFrom: topLeft, to: topRight)
+        
+        addChild(top)
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
-        border.categoryBitMask = borderCategory
-        bottom.physicsBody?.categoryBitMask = bottomCategory
+//        border.categoryBitMask = borderCategory
+//        bottom.physicsBody?.categoryBitMask = bottomCategory
         ball.physicsBody?.categoryBitMask = ballCategory
         
         block1.physicsBody?.categoryBitMask = blockCategory
         block2.physicsBody?.categoryBitMask = blockCategory
         block3.physicsBody?.categoryBitMask = blockCategory
         
-        ball.physicsBody?.contactTestBitMask = blockCategory | bottomCategory | paddleCategory
+        ball.physicsBody?.contactTestBitMask = blockCategory | paddleCategory
         }
     func didBegin(_ contact: SKPhysicsContact) {
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory && ball.color == block3.color {
@@ -102,6 +120,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if started == true && gameOver == false {
             checkIfStuck()
+            checkIfOutOfBounds()
             paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
     }
@@ -110,6 +129,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let location = touch.location(in: self)
         if started == true && gameOver == false {
             paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+            checkIfOutOfBounds()
         }
     }
     
@@ -156,7 +176,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             scene!.addChild(gameOverLabel)
         }
         else {
-        counter -= 1
+        counter -= 2
         label.text = String(counter)
         }
     }
@@ -193,6 +213,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
         block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
         block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
+    }
+    func checkIfOutOfBounds() {
+        if ball.position.y < frame.origin.y {
+            livesCount()
+        }
     }
 }
 
