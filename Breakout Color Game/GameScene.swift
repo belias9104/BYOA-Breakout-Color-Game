@@ -97,6 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.contactTestBitMask = blockCategory | paddleCategory
         }
     func didBegin(_ contact: SKPhysicsContact) {
+        //Checks for contact between ball and blocks or borders
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory && ball.color == block3.color {
             changeBlock(contact.bodyA.node as! SKSpriteNode)
         } else if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
@@ -119,6 +120,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         }
         if started == true && gameOver == false {
+            //Constantly checks the functions when tapped
             checkIfStuck()
             checkIfOutOfBounds()
             paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
@@ -181,7 +183,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func restartTapped() {
-        //restart the game
+        //Restarts the game
         if let view = self.view {
             if let scene = SKScene(fileNamed: "GameScene") {
                 scene.scaleMode = .aspectFill
@@ -194,6 +196,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func checkIfStuck() {
+        //Checks ball velocity and gives it an impulse if below 20
         if (ball.physicsBody?.velocity.dy)! < CGFloat(20) && (ball.physicsBody?.velocity.dy)! > CGFloat(-20) {
             if (ball.physicsBody?.velocity.dy)! < CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -300))
@@ -210,11 +213,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("check")
     }
     func blocksStartMoving() {
+        //Adds an action for the blocks to move up and down
         block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
         block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
         block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
     }
     func checkIfOutOfBounds() {
+        //Checks if the ball is below the bottom of the screen
         if ball.position.y < frame.origin.y {
             livesCount()
         }
