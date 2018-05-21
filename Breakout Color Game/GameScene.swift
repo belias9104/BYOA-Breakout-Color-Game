@@ -213,7 +213,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         print("check")
     }
     func blocksStartMoving() {
-        //Adds an action for the blocks to move up and down
+        //Adds an action for the blocks to randomly move up and down forever
         block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
         block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
         block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
