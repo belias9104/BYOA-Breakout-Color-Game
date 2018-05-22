@@ -41,6 +41,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         label.fontSize = 100.0
         label.position = CGPoint(x: 0, y: -35)
         addChild(label)
+        gameOverLabel = SKLabelNode(text: "Restart?")
+        gameOverLabel.fontSize = 60.0
+        gameOverLabel.position = CGPoint(x: 0, y: -150)
         
         paddle = self.childNode(withName: "paddle") as! SKSpriteNode
         block1 = self.childNode(withName: "block1") as! SKSpriteNode
@@ -53,29 +56,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let topLeft = CGPoint(x: frame.origin.x, y: -frame.origin.y)
         let topRight = CGPoint(x: -frame.origin.x, y: -frame.origin.y)
         
-        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
-        self.physicsBody = border
+//        let border = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        self.physicsBody = border
         
         
         
-        let bottom = SKNode()
-        bottom.name = "bottom"
-        bottom.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: bottomRight)
+//        let bottom = SKNode()
+//        bottom.name = "bottom"
+//        bottom.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: bottomRight)
+//
+//        addChild(bottom)
         
-        addChild(bottom)
+        let left = SKNode()
+        left.name = "left"
+        left.physicsBody = SKPhysicsBody(edgeFrom: bottomLeft, to: topLeft)
+        
+        addChild(left)
+        
+        let right = SKNode()
+        right.name = "right"
+        right.physicsBody = SKPhysicsBody(edgeFrom: bottomRight, to: topRight)
+        
+        addChild(right)
+        
+        let top = SKNode()
+        top.name = "top"
+        top.physicsBody = SKPhysicsBody(edgeFrom: topLeft, to: topRight)
+        
+        addChild(top)
         
         paddle.physicsBody?.categoryBitMask = paddleCategory
-        border.categoryBitMask = borderCategory
-        bottom.physicsBody?.categoryBitMask = bottomCategory
+//        border.categoryBitMask = borderCategory
+//        bottom.physicsBody?.categoryBitMask = bottomCategory
         ball.physicsBody?.categoryBitMask = ballCategory
         
         block1.physicsBody?.categoryBitMask = blockCategory
         block2.physicsBody?.categoryBitMask = blockCategory
         block3.physicsBody?.categoryBitMask = blockCategory
         
-        ball.physicsBody?.contactTestBitMask = blockCategory | bottomCategory | paddleCategory
+        ball.physicsBody?.contactTestBitMask = blockCategory | paddleCategory
         }
     func didBegin(_ contact: SKPhysicsContact) {
+        //Checks for contact between ball and blocks or borders
         if contact.bodyA.node?.physicsBody?.categoryBitMask == blockCategory && ball.color == block3.color {
             changeBlock(contact.bodyA.node as! SKSpriteNode)
         } else if contact.bodyA.node?.physicsBody?.categoryBitMask == bottomCategory {
@@ -94,17 +116,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if started == false {
             started = true
             ball.physicsBody?.applyImpulse(CGVector(dx: 300, dy: 300))
+            blocksStartMoving()
         }
-        paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
         if started == true && gameOver == false {
-                checkIfStuck()
+            //Constantly checks the functions when tapped
+            checkIfStuck()
+            checkIfOutOfBounds()
+            paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
         }
     }
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
         let location = touch.location(in: self)
-        paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+        if started == true && gameOver == false {
+            paddle.run(SKAction.moveTo(x: location.x, duration: 0.2))
+            checkIfOutOfBounds()
+        }
     }
     
     func changeBlock(_ node: SKSpriteNode) {
@@ -120,10 +148,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if blocks.count == 0 {
                 label.text = "You win!"
                 gameOver = true
-                gameOverLabel = SKLabelNode(text: "Restart?")
-                gameOverLabel.fontSize = 60.0
-                gameOverLabel.position = CGPoint(x: 0, y: -150)
                 ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+                block1.removeAllActions()
+                block2.removeAllActions()
+                block3.removeAllActions()
                 scene!.addChild(gameOverLabel)
             }
         }
@@ -143,19 +171,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if counter == 1 {
             label.text = "Game Over"
             gameOver = true
-            gameOverLabel = SKLabelNode(text: "Restart?")
-            gameOverLabel.fontSize = 60.0
-            gameOverLabel.position = CGPoint(x: 0, y: -150)
             ball.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
+            block1.removeAllActions()
+            block2.removeAllActions()
+            block3.removeAllActions()
             scene!.addChild(gameOverLabel)
         }
         else {
-        counter -= 1
+        counter -= 2
         label.text = String(counter)
         }
     }
     func restartTapped() {
-        //restart the game
+        //Restarts the game
         if let view = self.view {
             if let scene = SKScene(fileNamed: "GameScene") {
                 scene.scaleMode = .aspectFill
@@ -168,13 +196,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func checkIfStuck() {
-        if (ball.physicsBody?.velocity.dy)! < CGFloat(10) && (ball.physicsBody?.velocity.dy)! > CGFloat(-10) {
+        //Checks ball velocity and gives it an impulse if below 20
+        if (ball.physicsBody?.velocity.dy)! < CGFloat(20) && (ball.physicsBody?.velocity.dy)! > CGFloat(-20) {
             if (ball.physicsBody?.velocity.dy)! < CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: -300))
             } else if(ball.physicsBody?.velocity.dy)! >= CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 300))
             }
-        } else if (ball.physicsBody?.velocity.dx)! < CGFloat(10) && (ball.physicsBody?.velocity.dx)! > CGFloat(-10) {
+        } else if (ball.physicsBody?.velocity.dx)! < CGFloat(20) && (ball.physicsBody?.velocity.dx)! > CGFloat(-20) {
             if (ball.physicsBody?.velocity.dx)! < CGFloat(0) {
                 ball.physicsBody?.applyImpulse(CGVector(dx: -300, dy: 0))
             } else if(ball.physicsBody?.velocity.dx)! >= CGFloat(0) {
@@ -183,5 +212,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         print("check")
     }
+    func blocksStartMoving() {
+        //Adds an action for the blocks to randomly move up and down forever
+        block1.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
+        block2.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
+        block3.run(SKAction.repeatForever(SKAction.sequence([SKAction.moveTo(y: 300, duration: Double(arc4random_uniform(4) + 1)), SKAction.moveTo(y: 0, duration: Double(arc4random_uniform(4) + 1))])))
+    }
+    func checkIfOutOfBounds() {
+        //Checks if the ball is below the bottom of the screen
+        if ball.position.y < frame.origin.y {
+            livesCount()
+        }
+    }
 }
-    
+
