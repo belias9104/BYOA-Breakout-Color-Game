@@ -33,6 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
+        //adding some music!
         if let musicURL = Bundle.main.url(forResource: "My Song 68", withExtension: "m4a") {
             backgroundMusic = SKAudioNode(url: musicURL)
             addChild(backgroundMusic)
